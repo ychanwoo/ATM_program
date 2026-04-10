@@ -10,14 +10,6 @@ public class App {
         ATMService atmService = new ATMService(bankData);
         LanguageManager languageManager = new LanguageManager();
 
-        selectLanguage(scanner, languageManager);
-
-        if (!processLogin(scanner, atmService, languageManager)) {
-            System.out.println(languageManager.getText("login_locked"));
-            scanner.close();
-            return;
-        }
-
         boolean run = true;
 
         while (run) {
@@ -27,21 +19,51 @@ public class App {
 
             switch (menu) {
                 case 1:
+                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                        if (atmService.isLoginLocked()) {
+                            run = false;
+                        }
+                        break;
+                    }
                     withdrawMenu(scanner, atmService);
                     break;
                 case 2:
                     depositTransferMenu(scanner, atmService, languageManager);
                     break;
                 case 3:
+                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                        if (atmService.isLoginLocked()) {
+                            run = false;
+                        }
+                        break;
+                    }
                     accountTransferMenu(scanner, atmService);
                     break;
                 case 4:
+                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                        if (atmService.isLoginLocked()) {
+                            run = false;
+                        }
+                        break;
+                    }
                     bankbookMenu(atmService);
                     break;
                 case 5:
+                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                        if (atmService.isLoginLocked()) {
+                            run = false;
+                        }
+                        break;
+                    }
                     inquiryMenu(atmService);
                     break;
                 case 6:
+                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                        if (atmService.isLoginLocked()) {
+                            run = false;
+                        }
+                        break;
+                    }
                     cashbeeMenu(scanner, atmService);
                     break;
                 case 7:
@@ -57,6 +79,19 @@ public class App {
         }
 
         scanner.close();
+    }
+
+    public static boolean ensureLogin(Scanner scanner, ATMService atmService, LanguageManager languageManager) {
+        if (atmService.getCurrentAccount() != null) {
+            return true;
+        }
+
+        if (!processLogin(scanner, atmService, languageManager)) {
+            System.out.println(languageManager.getText("login_locked"));
+            return false;
+        }
+
+        return true;
     }
 
     public static void selectLanguage(Scanner scanner, LanguageManager languageManager) {
@@ -148,9 +183,17 @@ public class App {
         scanner.nextLine();
 
         switch (menu) {
-            case 1 -> depositMenu(scanner, atmService);
-            case 2 -> cashTransferMenu(scanner, atmService);
-            default -> System.out.println(languageManager.getText("invalid_menu"));
+            case 1:
+                if (!ensureLogin(scanner, atmService, languageManager)) {
+                    return;
+                }
+                depositMenu(scanner, atmService);
+                break;
+            case 2:
+                cashTransferMenu(scanner, atmService);
+                break;
+            default:
+                System.out.println(languageManager.getText("invalid_menu"));
         }
     }
 
