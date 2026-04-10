@@ -28,6 +28,7 @@ public class LoanAccount extends Account {
 
     @Override
     public void showAccountInfo() {
+        System.out.println("계좌종류: 대출계좌");
         System.out.println("계좌번호: " + getAccountNumber());
         System.out.println("잔액: " + getBalance() + "원");
         System.out.println("대출한도: " + loanLimit + "원");
