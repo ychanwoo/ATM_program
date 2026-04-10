@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class App {
     public static final String LINE = "==================================================";
     public static final String SUB_LINE = "--------------------------------------------------";
+    public static final String ATM_LINE = "================================================================================";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -61,15 +62,18 @@ public class App {
                     inquiryMenu(atmService);
                     break;
                 case 6:
-                    if (!ensureLogin(scanner, atmService, languageManager, "캐시비")) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "장기카드대출")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
                         break;
                     }
-                    cashbeeMenu(scanner, atmService);
+                    loanMenu(atmService);
                     break;
                 case 7:
+                    cashbeeMenu(scanner, atmService);
+                    break;
+                case 8:
                     otherMenu(scanner, languageManager);
                     break;
                 case 0:
@@ -150,18 +154,26 @@ public class App {
 
     public static void showMainMenu(LanguageManager languageManager) {
         System.out.println();
-        System.out.println(LINE);
-        System.out.println("                SINHAN ATM Service");
-        System.out.println(LINE);
-        System.out.println("  " + languageManager.getText("menu_1"));
-        System.out.println("  " + languageManager.getText("menu_2"));
-        System.out.println("  " + languageManager.getText("menu_3"));
-        System.out.println("  " + languageManager.getText("menu_4"));
-        System.out.println("  " + languageManager.getText("menu_5"));
-        System.out.println("  " + languageManager.getText("menu_6"));
-        System.out.println("  " + languageManager.getText("menu_7"));
-        System.out.println("  " + languageManager.getText("menu_0"));
-        System.out.println(SUB_LINE);
+        System.out.println(ATM_LINE);
+        System.out.println("  신하나은행 ATM".concat(padRight("", 40)).concat("www.shin.com"));
+        System.out.println("  점번호 : 0101".concat(padRight("", 33)).concat("기번 : 1234"));
+        System.out.println(ATM_LINE);
+        System.out.println("  ┌────────────────┐   ┌────────────────────────────┐   ┌────────────────┐");
+        System.out.println("  │ [1] 예금출금   │   │ 만원/오만원권 출금 가능    │   │ [5] 예금조회   │");
+        System.out.println("  └────────────────┘   │ 오만원권 입금 가능         │   └────────────────┘");
+        System.out.println("  ┌────────────────┐   └────────────────────────────┘   ┌────────────────┐");
+        System.out.println("  │ [2] 입금/무통장│   ┌────────────────────────────┐   │ [6] 장기카드대출│");
+        System.out.println("  │     입금       │   │ ATM에서도 다양한 서비스    │   └────────────────┘");
+        System.out.println("  └────────────────┘   │        신하나은행 ATM      │   ┌────────────────┐");
+        System.out.println("  ┌────────────────┐   └────────────────────────────┘   │ [7] 캐시비/    │");
+        System.out.println("  │ [3] 계좌이체   │                                    │     하이패스   │");
+        System.out.println("  └────────────────┘                                    └────────────────┘");
+        System.out.println("  ┌────────────────┐                                    ┌────────────────┐");
+        System.out.println("  │ [4] 통장정리   │                                    │ [8] 다른업무   │");
+        System.out.println("  └────────────────┘                                    │   언어설정     │");
+        System.out.println("                                                        └────────────────┘");
+        System.out.println(ATM_LINE);
+        System.out.println("  종료를 원하면 0번을 입력하세요.");
         System.out.print("  " + languageManager.getText("menu_input"));
     }
 
@@ -209,6 +221,7 @@ public class App {
     }
 
     public static void depositMenu(Scanner scanner, ATMService atmService) {
+        System.out.println("  입금하실 카드나 통장을 넣어주세요.");
         System.out.print("  금액 입력: ");
         int money = scanner.nextInt();
         scanner.nextLine();
@@ -261,12 +274,18 @@ public class App {
 
     public static void bankbookMenu(ATMService atmService) {
         showSectionTitle("통장정리");
+        System.out.println("  통장을 넣어주세요.");
         atmService.showTransactionHistory();
     }
 
     public static void inquiryMenu(ATMService atmService) {
         showSectionTitle("예금조회");
         atmService.showCurrentAccountInfo();
+    }
+
+    public static void loanMenu(ATMService atmService) {
+        showSectionTitle("장기카드대출");
+        atmService.showLoanAccountInfo();
     }
 
     public static void cashbeeMenu(Scanner scanner, ATMService atmService) {
@@ -282,6 +301,7 @@ public class App {
 
         switch (menu) {
             case 1:
+                System.out.println("  교통카드를 넣어주세요.");
                 System.out.print("  금액 입력: ");
                 int cashbeeMoney = scanner.nextInt();
                 scanner.nextLine();
@@ -293,6 +313,7 @@ public class App {
                 }
                 break;
             case 2:
+                System.out.println("  하이패스를 넣어주세요.");
                 System.out.print("  금액 입력: ");
                 int hiPassMoney = scanner.nextInt();
                 scanner.nextLine();
@@ -335,5 +356,15 @@ public class App {
 
     public static boolean isValidCashUnit(int money) {
         return money > 0 && money % 10000 == 0;
+    }
+
+    public static String padRight(String text, int count) {
+        StringBuilder builder = new StringBuilder(text);
+
+        for (int i = 0; i < count; i++) {
+            builder.append(" ");
+        }
+
+        return builder.toString();
     }
 }

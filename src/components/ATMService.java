@@ -119,31 +119,21 @@ public class ATMService {
     }
 
     public boolean chargeCashbee(int money) {
-        if (currentAccount == null || money <= 0) {
+        if (money <= 0) {
             return false;
         }
 
-        if (currentAccount.withdraw(money)) {
-            cashbee.chargeCashbee(money);
-            addTransaction("캐시비충전", currentAccount.getAccountNumber(), money, currentAccount.getBalance());
-            return true;
-        }
-
-        return false;
+        cashbee.chargeCashbee(money);
+        return true;
     }
 
     public boolean chargeHiPass(int money) {
-        if (currentAccount == null || money <= 0) {
+        if (money <= 0) {
             return false;
         }
 
-        if (currentAccount.withdraw(money)) {
-            cashbee.chargeHiPass(money);
-            addTransaction("하이패스충전", currentAccount.getAccountNumber(), money, currentAccount.getBalance());
-            return true;
-        }
-
-        return false;
+        cashbee.chargeHiPass(money);
+        return true;
     }
 
     public void showCashbeeInfo() {
@@ -157,6 +147,19 @@ public class ATMService {
         }
 
         currentAccount.showAccountInfo();
+    }
+
+    public void showLoanAccountInfo() {
+        if (currentAccount == null) {
+            System.out.println("계좌가 없습니다.");
+            return;
+        }
+
+        if (currentAccount instanceof LoanAccount) {
+            currentAccount.showAccountInfo();
+        } else {
+            System.out.println("현재 입력하신 계좌는 대출 계좌가 아닙니다.");
+        }
     }
 
     public void showTransactionHistory() {

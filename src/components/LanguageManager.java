@@ -53,8 +53,9 @@ public class LanguageManager {
             case "menu_3" -> "3. 계좌이체";
             case "menu_4" -> "4. 통장정리";
             case "menu_5" -> "5. 예금조회";
-            case "menu_6" -> "6. 캐시비(하이패스)";
-            case "menu_7" -> "7. 다른업무(언어설정)";
+            case "menu_6" -> "6. 장기카드대출";
+            case "menu_7" -> "7. 캐시비(하이패스)";
+            case "menu_8" -> "8. 다른업무(언어설정)";
             case "menu_0" -> "0. 종료";
             case "menu_input" -> "메뉴 선택: ";
             case "invalid_menu" -> "잘못된 메뉴 번호입니다.";
@@ -89,8 +90,9 @@ public class LanguageManager {
             case "menu_3" -> "3. Account Transfer";
             case "menu_4" -> "4. Bankbook Update";
             case "menu_5" -> "5. Account Inquiry";
-            case "menu_6" -> "6. Cashbee (Hi-Pass)";
-            case "menu_7" -> "7. Other Services (Language)";
+            case "menu_6" -> "6. Long-term Card Loan";
+            case "menu_7" -> "7. Cashbee (Hi-Pass)";
+            case "menu_8" -> "8. Other Services (Language)";
             case "menu_0" -> "0. Exit";
             case "menu_input" -> "Select menu: ";
             case "invalid_menu" -> "Invalid menu number.";
@@ -125,8 +127,9 @@ public class LanguageManager {
             case "menu_3" -> "3. 口座振替";
             case "menu_4" -> "4. 通帳整理";
             case "menu_5" -> "5. 預金照会";
-            case "menu_6" -> "6. Cashbee (Hi-Pass)";
-            case "menu_7" -> "7. その他業務(言語設定)";
+            case "menu_6" -> "6. 長期カードローン";
+            case "menu_7" -> "7. Cashbee (Hi-Pass)";
+            case "menu_8" -> "8. その他業務(言語設定)";
             case "menu_0" -> "0. 終了";
             case "menu_input" -> "メニュー選択: ";
             case "invalid_menu" -> "無効なメニューです。";
@@ -161,8 +164,9 @@ public class LanguageManager {
             case "menu_3" -> "3. 账户转账";
             case "menu_4" -> "4. 存折整理";
             case "menu_5" -> "5. 存款查询";
-            case "menu_6" -> "6. Cashbee (Hi-Pass)";
-            case "menu_7" -> "7. 其他业务(语言设置)";
+            case "menu_6" -> "6. 长期卡贷款";
+            case "menu_7" -> "7. Cashbee (Hi-Pass)";
+            case "menu_8" -> "8. 其他业务(语言设置)";
             case "menu_0" -> "0. 退出";
             case "menu_input" -> "选择菜单: ";
             case "invalid_menu" -> "菜单编号错误。";
