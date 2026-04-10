@@ -20,11 +20,11 @@ public class Account {
     }
 
     public int getBalance() {
-      return balance;
+        return balance;
     }
-    
+
     protected void setBalance(int balance) {
-      this.balance = balance;
+        this.balance = balance;
     }
 
     public void deposit(int money) {
@@ -47,6 +47,7 @@ public class Account {
     }
 
     public void showAccountInfo() {
+        System.out.println("계좌종류: 일반계좌");
         System.out.println("계좌번호: " + accountNumber);
         System.out.println("잔액: " + balance + "원");
     }
