@@ -41,12 +41,12 @@ public class LanguageManager {
             case "selected_japanese" -> "일본어가 선택되었습니다.";
             case "selected_chinese" -> "중국어가 선택되었습니다.";
             case "default_language" -> "기본 언어는 한국어로 설정됩니다.";
-            case "login_title" -> "===== 로그인 =====";
+            case "login_title" -> "===== 계좌 정보 입력 =====";
             case "input_account" -> "계좌번호 입력: ";
             case "input_password" -> "비밀번호 입력: ";
-            case "login_success" -> "로그인 성공";
-            case "login_fail" -> "로그인 실패";
-            case "login_locked" -> "로그인 3회 실패로 프로그램을 종료합니다.";
+            case "login_success" -> "잠시만 기다려주세요.";
+            case "login_fail" -> "다시 시도해주세요.";
+            case "login_locked" -> "3회 실패로 프로그램을 종료합니다.";
             case "main_menu" -> "===== ATM 메인 메뉴 =====";
             case "menu_1" -> "1. 예금출금";
             case "menu_2" -> "2. 입금/무통장입금";

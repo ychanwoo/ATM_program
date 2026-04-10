@@ -152,7 +152,7 @@ public class ATMService {
 
     public void showCurrentAccountInfo() {
         if (currentAccount == null) {
-            System.out.println("로그인된 계좌가 없습니다.");
+            System.out.println("계좌가 없습니다.");
             return;
         }
 
@@ -161,7 +161,7 @@ public class ATMService {
 
     public void showTransactionHistory() {
         if (currentAccount == null) {
-            System.out.println("로그인된 계좌가 없습니다.");
+            System.out.println("계좌가 없습니다.");
             return;
         }
 

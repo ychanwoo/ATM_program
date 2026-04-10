@@ -4,6 +4,9 @@ import components.LanguageManager;
 import java.util.Scanner;
 
 public class App {
+    public static final String LINE = "==================================================";
+    public static final String SUB_LINE = "--------------------------------------------------";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         BankData bankData = new BankData();
@@ -19,7 +22,7 @@ public class App {
 
             switch (menu) {
                 case 1:
-                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "출금")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
@@ -31,7 +34,7 @@ public class App {
                     depositTransferMenu(scanner, atmService, languageManager);
                     break;
                 case 3:
-                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "계좌이체")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
@@ -40,7 +43,7 @@ public class App {
                     accountTransferMenu(scanner, atmService);
                     break;
                 case 4:
-                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "통장정리")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
@@ -49,7 +52,7 @@ public class App {
                     bankbookMenu(atmService);
                     break;
                 case 5:
-                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "예금조회")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
@@ -58,7 +61,7 @@ public class App {
                     inquiryMenu(atmService);
                     break;
                 case 6:
-                    if (!ensureLogin(scanner, atmService, languageManager)) {
+                    if (!ensureLogin(scanner, atmService, languageManager, "캐시비")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
@@ -81,12 +84,12 @@ public class App {
         scanner.close();
     }
 
-    public static boolean ensureLogin(Scanner scanner, ATMService atmService, LanguageManager languageManager) {
+    public static boolean ensureLogin(Scanner scanner, ATMService atmService, LanguageManager languageManager, String sectionTitle) {
         if (atmService.getCurrentAccount() != null) {
             return true;
         }
 
-        if (!processLogin(scanner, atmService, languageManager)) {
+        if (!processLogin(scanner, atmService, languageManager, sectionTitle)) {
             System.out.println(languageManager.getText("login_locked"));
             return false;
         }
@@ -125,21 +128,20 @@ public class App {
         }
     }
 
-    public static boolean processLogin(Scanner scanner, ATMService atmService, LanguageManager languageManager) {
+    public static boolean processLogin(Scanner scanner, ATMService atmService, LanguageManager languageManager, String sectionTitle) {
         while (!atmService.isLoginLocked()) {
-            System.out.println();
-            System.out.println(languageManager.getText("login_title"));
-            System.out.print(languageManager.getText("input_account"));
+            showSectionTitle(sectionTitle);
+            System.out.print("  " + languageManager.getText("input_account"));
             String accountNumber = scanner.nextLine();
 
-            System.out.print(languageManager.getText("input_password"));
+            System.out.print("  " + languageManager.getText("input_password"));
             String password = scanner.nextLine();
 
             if (atmService.login(accountNumber, password)) {
-                System.out.println(languageManager.getText("login_success"));
+                showSuccess(languageManager.getText("login_success"));
                 return true;
             } else {
-                System.out.println(languageManager.getText("login_fail"));
+                showFail(languageManager.getText("login_fail"));
             }
         }
 
@@ -148,43 +150,52 @@ public class App {
 
     public static void showMainMenu(LanguageManager languageManager) {
         System.out.println();
-        System.out.println(languageManager.getText("main_menu"));
-        System.out.println(languageManager.getText("menu_1"));
-        System.out.println(languageManager.getText("menu_2"));
-        System.out.println(languageManager.getText("menu_3"));
-        System.out.println(languageManager.getText("menu_4"));
-        System.out.println(languageManager.getText("menu_5"));
-        System.out.println(languageManager.getText("menu_6"));
-        System.out.println(languageManager.getText("menu_7"));
-        System.out.println(languageManager.getText("menu_0"));
-        System.out.print(languageManager.getText("menu_input"));
+        System.out.println(LINE);
+        System.out.println("                SINHAN ATM Service");
+        System.out.println(LINE);
+        System.out.println("  " + languageManager.getText("menu_1"));
+        System.out.println("  " + languageManager.getText("menu_2"));
+        System.out.println("  " + languageManager.getText("menu_3"));
+        System.out.println("  " + languageManager.getText("menu_4"));
+        System.out.println("  " + languageManager.getText("menu_5"));
+        System.out.println("  " + languageManager.getText("menu_6"));
+        System.out.println("  " + languageManager.getText("menu_7"));
+        System.out.println("  " + languageManager.getText("menu_0"));
+        System.out.println(SUB_LINE);
+        System.out.print("  " + languageManager.getText("menu_input"));
     }
 
     public static void withdrawMenu(Scanner scanner, ATMService atmService) {
-        System.out.println("===== 예금출금 =====");
-        System.out.print("금액 입력: ");
+        showSectionTitle("출금 서비스");
+        System.out.print("  금액 입력: ");
         int money = scanner.nextInt();
         scanner.nextLine();
 
+        if (!isValidCashUnit(money)) {
+            showFail("만원 단위로 입출금이 가능합니다.");
+            return;
+        }
+
         if (atmService.withdraw(money)) {
-            System.out.println("출금이 완료되었습니다.");
+            showSuccess("출금이 완료되었습니다.");
         } else {
-            System.out.println("출금에 실패했습니다.");
+            showFail("출금에 실패했습니다.");
         }
     }
 
     public static void depositTransferMenu(Scanner scanner, ATMService atmService, LanguageManager languageManager) {
-        System.out.println("===== 입금/무통장입금 =====");
-        System.out.println("1. 입금");
-        System.out.println("2. 무통장입금");
-        System.out.print(languageManager.getText("select"));
+        showSectionTitle("입금 / 무통장입금");
+        System.out.println("  1. 입금");
+        System.out.println("  2. 무통장입금");
+        System.out.println(SUB_LINE);
+        System.out.print("  " + languageManager.getText("select"));
 
         int menu = scanner.nextInt();
         scanner.nextLine();
 
         switch (menu) {
             case 1:
-                if (!ensureLogin(scanner, atmService, languageManager)) {
+                if (!ensureLogin(scanner, atmService, languageManager, "입금")) {
                     return;
                 }
                 depositMenu(scanner, atmService);
@@ -198,104 +209,131 @@ public class App {
     }
 
     public static void depositMenu(Scanner scanner, ATMService atmService) {
-        System.out.print("금액 입력: ");
+        System.out.print("  금액 입력: ");
         int money = scanner.nextInt();
         scanner.nextLine();
 
+        if (!isValidCashUnit(money)) {
+            showFail("만원 단위로 입출금이 가능합니다.");
+            return;
+        }
+
         if (atmService.deposit(money)) {
-            System.out.println("입금이 완료되었습니다.");
+            showSuccess("입금이 완료되었습니다.");
         } else {
-            System.out.println("입금에 실패했습니다.");
+            showFail("입금에 실패했습니다.");
         }
     }
 
     public static void cashTransferMenu(Scanner scanner, ATMService atmService) {
-        System.out.print("보내는 사람 이름 입력: ");
+        System.out.print("  보내는 사람 이름 입력: ");
         String senderName = scanner.nextLine();
 
-        System.out.print("받는 계좌번호 입력: ");
+        System.out.print("  받는 계좌번호 입력: ");
         String targetAccountNumber = scanner.nextLine();
 
-        System.out.print("금액 입력: ");
+        System.out.print("  금액 입력: ");
         int money = scanner.nextInt();
         scanner.nextLine();
 
         if (atmService.cashTransfer(targetAccountNumber, money)) {
-            System.out.println(senderName + "님의 무통장입금이 완료되었습니다.");
+            showSuccess(senderName + "님의 무통장입금이 완료되었습니다.");
         } else {
-            System.out.println("무통장입금에 실패했습니다.");
+            showFail("무통장입금에 실패했습니다.");
         }
     }
 
     public static void accountTransferMenu(Scanner scanner, ATMService atmService) {
-        System.out.println("===== 계좌이체 =====");
-        System.out.print("이체할 계좌번호 입력: ");
+        showSectionTitle("계좌이체 서비스");
+        System.out.print("  이체할 계좌번호 입력: ");
         String targetAccountNumber = scanner.nextLine();
 
-        System.out.print("금액 입력: ");
+        System.out.print("  금액 입력: ");
         int money = scanner.nextInt();
         scanner.nextLine();
 
         if (atmService.transfer(targetAccountNumber, money)) {
-            System.out.println("계좌이체가 완료되었습니다.");
+            showSuccess("계좌이체가 완료되었습니다.");
         } else {
-            System.out.println("계좌이체에 실패했습니다.");
+            showFail("계좌이체에 실패했습니다.");
         }
     }
 
     public static void bankbookMenu(ATMService atmService) {
-        System.out.println("===== 통장정리 =====");
+        showSectionTitle("통장정리");
         atmService.showTransactionHistory();
     }
 
     public static void inquiryMenu(ATMService atmService) {
-        System.out.println("===== 예금조회 =====");
+        showSectionTitle("예금조회");
         atmService.showCurrentAccountInfo();
     }
 
     public static void cashbeeMenu(Scanner scanner, ATMService atmService) {
-        System.out.println("===== 캐시비(하이패스) =====");
-        System.out.println("1. 캐시비 충전");
-        System.out.println("2. 하이패스 충전");
-        System.out.println("3. 잔액 조회");
-        System.out.print("선택: ");
+        showSectionTitle("캐시비 / 하이패스");
+        System.out.println("  1. 캐시비 충전");
+        System.out.println("  2. 하이패스 충전");
+        System.out.println("  3. 잔액 조회");
+        System.out.println(SUB_LINE);
+        System.out.print("  선택: ");
 
         int menu = scanner.nextInt();
         scanner.nextLine();
 
         switch (menu) {
             case 1:
-                System.out.print("금액 입력: ");
+                System.out.print("  금액 입력: ");
                 int cashbeeMoney = scanner.nextInt();
                 scanner.nextLine();
 
                 if (atmService.chargeCashbee(cashbeeMoney)) {
-                    System.out.println("캐시비 충전이 완료되었습니다.");
+                    showSuccess("캐시비 충전이 완료되었습니다.");
                 } else {
-                    System.out.println("캐시비 충전에 실패했습니다.");
+                    showFail("캐시비 충전에 실패했습니다.");
                 }
                 break;
             case 2:
-                System.out.print("금액 입력: ");
+                System.out.print("  금액 입력: ");
                 int hiPassMoney = scanner.nextInt();
                 scanner.nextLine();
 
                 if (atmService.chargeHiPass(hiPassMoney)) {
-                    System.out.println("하이패스 충전이 완료되었습니다.");
+                    showSuccess("하이패스 충전이 완료되었습니다.");
                 } else {
-                    System.out.println("하이패스 충전에 실패했습니다.");
+                    showFail("하이패스 충전에 실패했습니다.");
                 }
                 break;
             case 3:
                 atmService.showCashbeeInfo();
                 break;
             default:
-                System.out.println("잘못된 메뉴 번호입니다.");
+                showFail("잘못된 메뉴 번호입니다.");
         }
     }
 
     public static void otherMenu(Scanner scanner, LanguageManager languageManager) {
-        System.out.println(languageManager.getText("other_title"));
+        showSectionTitle(languageManager.getText("other_title"));
         selectLanguage(scanner, languageManager);
+    }
+
+    public static void showSectionTitle(String title) {
+        System.out.println();
+        System.out.println(LINE);
+        System.out.println("  " + title);
+        System.out.println(LINE);
+    }
+
+    public static void showSuccess(String message) {
+        System.out.println();
+        System.out.println("[완료] " + message);
+    }
+
+    public static void showFail(String message) {
+        System.out.println();
+        System.out.println("[안내] " + message);
+    }
+
+    public static boolean isValidCashUnit(int money) {
+        return money > 0 && money % 10000 == 0;
     }
 }
