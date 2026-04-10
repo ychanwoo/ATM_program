@@ -20,7 +20,11 @@ public class Account {
     }
 
     public int getBalance() {
-        return balance;
+      return balance;
+    }
+    
+    protected void setBalance(int balance) {
+      this.balance = balance;
     }
 
     public void deposit(int money) {
