@@ -30,10 +30,11 @@ public class Transaction {
     }
 
     public void showTransactionInfo() {
-        System.out.println("거래종류: " + type);
-        System.out.println("계좌번호: " + accountNumber);
-        System.out.println("거래금액: " + amount + "원");
-        System.out.println("거래후잔액: " + balanceAfter + "원");
-        System.out.println("----------------------");
+        System.out.println("┌──────────────────────────────────────────────┐");
+        System.out.println("  거래종류 : " + type);
+        System.out.println("  계좌번호 : " + accountNumber);
+        System.out.println("  거래금액 : " + amount + "원");
+        System.out.println("  거래후잔액 : " + balanceAfter + "원");
+        System.out.println("└──────────────────────────────────────────────┘");
     }
 }

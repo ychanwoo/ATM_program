@@ -47,8 +47,12 @@ public class Account {
     }
 
     public void showAccountInfo() {
-        System.out.println("계좌종류: 일반계좌");
-        System.out.println("계좌번호: " + accountNumber);
-        System.out.println("잔액: " + balance + "원");
+        System.out.println("┌──────────────────────────────────────────────┐");
+        System.out.println("│                  계좌 정보                  │");
+        System.out.println("├──────────────────────────────────────────────┤");
+        System.out.println("  계좌종류 : 일반계좌");
+        System.out.println("  계좌번호 : " + accountNumber);
+        System.out.println("  현재잔액 : " + balance + "원");
+        System.out.println("└──────────────────────────────────────────────┘");
     }
 }

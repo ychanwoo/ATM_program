@@ -62,7 +62,11 @@ public class Cashbee {
     }
 
     public void showInfo() {
-        System.out.println("캐시비 잔액: " + cashbeeBalance + "원");
-        System.out.println("하이패스 잔액: " + hiPassBalance + "원");
+        System.out.println("┌──────────────────────────────────────────────┐");
+        System.out.println("│             캐시비 / 하이패스 정보          │");
+        System.out.println("├──────────────────────────────────────────────┤");
+        System.out.println("  캐시비 잔액   : " + cashbeeBalance + "원");
+        System.out.println("  하이패스 잔액 : " + hiPassBalance + "원");
+        System.out.println("└──────────────────────────────────────────────┘");
     }
 }
