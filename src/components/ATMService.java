@@ -61,6 +61,10 @@ public class ATMService {
             return false;
         }
 
+        if (money <= 0) {
+            return false;
+        }
+
         return currentAccount.withdraw(money);
     }
 
@@ -70,8 +74,12 @@ public class ATMService {
         }
 
         if (money <= 0) {
-            return false;
+          return false;
         }
+        
+        if (currentAccount.getAccountNumber().equals(targetAccountNumber)) {
+          return false;
+        } 
 
         Account[] accounts = bankData.getAccounts();
         Account targetAccount = null;
@@ -90,6 +98,23 @@ public class ATMService {
         if (currentAccount.withdraw(money)) {
             targetAccount.deposit(money);
             return true;
+        }
+
+        return false;
+    }
+
+    public boolean cashTransfer(String targetAccountNumber, int money) {
+        if (money <= 0) {
+            return false;
+        }
+
+        Account[] accounts = bankData.getAccounts();
+
+        for (int i = 0; i < accounts.length; i++) {
+            if (accounts[i].getAccountNumber().equals(targetAccountNumber)) {
+                accounts[i].deposit(money);
+                return true;
+            }
         }
 
         return false;
