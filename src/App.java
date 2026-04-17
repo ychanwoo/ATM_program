@@ -59,16 +59,22 @@ public class App {
                         }
                         break;
                     }
-                    inquiryMenu(atmService);
+                    inquiryMenu(scanner, atmService);
                     break;
                 case 6:
-                    if (!ensureLogin(scanner, atmService, languageManager, "장기카드대출")) {
+                    if (!processLogin(scanner, atmService, languageManager, "장기카드대출")) {
                         if (atmService.isLoginLocked()) {
                             run = false;
                         }
                         break;
                     }
-                    loanMenu(atmService);
+
+                    if (!atmService.isCurrentLoanAccount()) {
+                        showFail("현재 입력하신 계좌는 대출 계좌가 아닙니다.");
+                        break;
+                    }
+
+                    loanMenu(scanner, atmService);
                     break;
                 case 7:
                     cashbeeMenu(scanner, atmService);
@@ -278,14 +284,42 @@ public class App {
         atmService.showTransactionHistory();
     }
 
-    public static void inquiryMenu(ATMService atmService) {
-        showSectionTitle("예금조회");
-        atmService.showCurrentAccountInfo();
+    public static void inquiryMenu(Scanner scanner, ATMService atmService) {
+        while (true) {
+            showSectionTitle("예금조회");
+            atmService.showCurrentAccountInfo();
+            System.out.println(SUB_LINE);
+            System.out.println("  1. 메인화면으로 돌아가기");
+            System.out.print("  선택: ");
+
+            int menu = scanner.nextInt();
+            scanner.nextLine();
+
+            if (menu == 1) {
+                return;
+            }
+
+            showFail("1번을 입력하면 메인화면으로 돌아갑니다.");
+        }
     }
 
-    public static void loanMenu(ATMService atmService) {
-        showSectionTitle("장기카드대출");
-        atmService.showLoanAccountInfo();
+    public static void loanMenu(Scanner scanner, ATMService atmService) {
+        while (true) {
+            showSectionTitle("장기카드대출");
+            atmService.showLoanAccountInfo();
+            System.out.println(SUB_LINE);
+            System.out.println("  1. 메인화면으로 돌아가기");
+            System.out.print("  선택: ");
+
+            int menu = scanner.nextInt();
+            scanner.nextLine();
+
+            if (menu == 1) {
+                return;
+            }
+
+            showFail("1번을 입력하면 메인화면으로 돌아갑니다.");
+        }
     }
 
     public static void cashbeeMenu(Scanner scanner, ATMService atmService) {

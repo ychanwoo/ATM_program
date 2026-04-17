@@ -6,9 +6,9 @@ public class BankData {
     public BankData() {
         accounts = new Account[5];
 
-        accounts[0] = new Account("1001", "1111", 0);
-        accounts[1] = new Account("1002", "2222", 0);
-        accounts[2] = new Account("1003", "3333", 0);
+        accounts[0] = new Account("1001", "1111", 1000000);
+        accounts[1] = new Account("1002", "2222", 1000000);
+        accounts[2] = new Account("1003", "3333", 1000000);
         accounts[3] = new LoanAccount("2001", "4444", 0, 500000);
         accounts[4] = new LoanAccount("2002", "5555", 0, 300000);
     }

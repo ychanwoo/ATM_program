@@ -45,6 +45,10 @@ public class ATMService {
         return currentAccount;
     }
 
+    public boolean isCurrentLoanAccount() {
+        return currentAccount instanceof LoanAccount;
+    }
+
     public boolean deposit(int money) {
         if (currentAccount == null || money <= 0) {
             return false;
